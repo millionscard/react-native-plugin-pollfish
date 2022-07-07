@@ -10,7 +10,7 @@
     "license": "Commercial",
     "homepage": "https://www.pollfish.com",
     "devDependencies": {
-        "react-native": "0.41.2"
+        "react-native": "0.68.1"
     },
     "peerDependencies": {
         "react": "*",
@@ -18,7 +18,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/pollfish/react-native-plugin-pollfish"
+        "url": "https://github.com/millionscard/react-native-plugin-pollfish"
     },
     "keywords": [
         "react-native",

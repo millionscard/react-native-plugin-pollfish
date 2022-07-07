@@ -10,6 +10,9 @@ const PollfishUserRejectedSurveyListener = "onUserRejectedSurvey";
 const PollfishSurveyReceivedListener = "onPollfishSurveyReceived";
 const PollfishSurveyCompletedListener = "onPollfishSurveyCompleted";
 const PollfishUserNotEligibleListener = "onUserNotEligible";
+const PollfishInitFailedWithNullKeyListener = "onInitFailedWithNullKey";
+const PollfishInitiatedWithParamsListener = "onInitiatedWithParams";
+const PollfishInitiatedWithParamsErrorListener = "onInitiatedWithParamsError";
 
 const eventHandlers = {
     onPollfishClosed: new Map(),
@@ -18,7 +21,10 @@ const eventHandlers = {
     onUserRejectedSurvey: new Map(),
     onUserNotEligible: new Map(),
     onPollfishSurveyReceived: new Map(),
-    onPollfishSurveyCompleted: new Map()
+    onPollfishSurveyCompleted: new Map(),
+    onInitFailedWithNullKey: new Map(),
+    onInitiatedWithParams: new Map(),
+    onInitiatedWithParamsError: new Map()
 };
 
 const removeAllListeners = () => {
@@ -29,6 +35,9 @@ const removeAllListeners = () => {
     PollfishEventEmitter.removeAllListeners(PollfishUserNotEligibleListener);
     PollfishEventEmitter.removeAllListeners(PollfishSurveyReceivedListener);
     PollfishEventEmitter.removeAllListeners(PollfishSurveyCompletedListener);
+    PollfishEventEmitter.removeAllListeners(PollfishInitiatedWithParamsListener);
+    PollfishEventEmitter.removeAllListeners(PollfishInitFailedWithNullKeyListener);
+    PollfishEventEmitter.removeAllListeners(PollfishInitiatedWithParamsErrorListener);
 };
 
 const addEventListener = (type, handler) => {
@@ -40,6 +49,9 @@ const addEventListener = (type, handler) => {
         case PollfishUserNotEligibleListener:
         case PollfishSurveyReceivedListener:
         case PollfishSurveyCompletedListener:
+        case PollfishInitiatedWithParamsErrorListener:
+        case PollfishInitFailedWithNullKeyListener:
+        case PollfishInitiatedWithParamsListener:
             eventHandlers[type].set(handler, PollfishEventEmitter.addListener(type, handler));
             break;
         default:
@@ -66,8 +78,8 @@ const Position = {
 }
 
 let Params = function(
-    androidApiKey, 
-    iOSApiKey, 
+    androidApiKey,
+    iOSApiKey,
     indicatorPosition,
     indicatorPadding,
     offerwallMode,
@@ -109,8 +121,8 @@ let Builder = function(androidApiKey, iOSApiKey) {
 
 /**
  * Sets the Position where you wish to place the Pollfish indicator
- * 
- * @param {number} indicatorPosition 
+ *
+ * @param {number} indicatorPosition
  * @returns {Builder} itself
  */
 Builder.prototype.indicatorPosition = function(indicatorPosition) {
@@ -120,8 +132,8 @@ Builder.prototype.indicatorPosition = function(indicatorPosition) {
 
 /**
  * Sets the padding from the top or the bottom of the view, according to the Position of Pollfish indicator
- * 
- * @param {number} indicatorPadding 
+ *
+ * @param {number} indicatorPadding
  * @returns {Builder} itself
  */
 Builder.prototype.indicatorPadding = function(indicatorPadding) {
@@ -131,8 +143,8 @@ Builder.prototype.indicatorPadding = function(indicatorPadding) {
 
 /**
  * Sets Pollfish to offerwall mode
- * 
- * @param {Boolean} offerwallMode 
+ *
+ * @param {Boolean} offerwallMode
  * @returns {Builder} itself
  */
 Builder.prototype.offerwallMode = function(offerwallMode) {
@@ -142,8 +154,8 @@ Builder.prototype.offerwallMode = function(offerwallMode) {
 
 /**
  * Sets Pollfish SDK to Developer or Release mode
- * 
- * @param {Boolean} releaseMode 
+ *
+ * @param {Boolean} releaseMode
  * @returns {Builder} itself
  */
 Builder.prototype.releaseMode = function(releaseMode) {
@@ -153,8 +165,8 @@ Builder.prototype.releaseMode = function(releaseMode) {
 
 /**
  * Initializes Pollfish in reward mode
- * 
- * @param {Boolean} rewardMode 
+ *
+ * @param {Boolean} rewardMode
  * @returns {Builder} itself
  */
 Builder.prototype.rewardMode = function(rewardMode) {
@@ -164,8 +176,8 @@ Builder.prototype.rewardMode = function(rewardMode) {
 
 /**
  * Sets a unique id to identify a user and be passed through server-to-server callbacks
- * 
- * @param {String} requestUUID 
+ *
+ * @param {String} requestUUID
  * @returns {Builder} itself
  */
 Builder.prototype.requestUUID = function(requestUUID) {
@@ -175,8 +187,8 @@ Builder.prototype.requestUUID = function(requestUUID) {
 
 /**
  * Provides user attributes upfront during initialization
- * 
- * @param {Object} userProperties 
+ *
+ * @param {Object} userProperties
  * @returns {Builder} itself
  */
 Builder.prototype.userProperties = function(userProperties) {
@@ -186,8 +198,8 @@ Builder.prototype.userProperties = function(userProperties) {
 
 /**
  * A pass throught param that will be passed back through server-to-server callback
- * 
- * @param {String} clickId 
+ *
+ * @param {String} clickId
  * @returns {Builder} itself
  */
 Builder.prototype.clickId = function(clickId) {
@@ -197,8 +209,8 @@ Builder.prototype.clickId = function(clickId) {
 
 /**
  * An optional parameter used to secure the rewardConversion and rewardName parameters passed on RewardInfo object
- * 
- * @param {String} signature 
+ *
+ * @param {String} signature
  * @returns {Builder} itself
  */
 Builder.prototype.signature = function(signature) {
@@ -208,8 +220,8 @@ Builder.prototype.signature = function(signature) {
 
 /**
  * An object holding information regarding the survey completion reward
- * 
- * @param {Object} rewardInfo 
+ *
+ * @param {Object} rewardInfo
  * @returns {Builder} itself
  */
 Builder.prototype.rewardInfo = function(rewardInfo) {
@@ -219,7 +231,7 @@ Builder.prototype.rewardInfo = function(rewardInfo) {
 
 /**
  * Creates the initialization params object passed in pollfishpugin.init function
- * 
+ *
  * @returns {Params} object which is used to initialize Pollfish
  */
 Builder.prototype.build = function() {
