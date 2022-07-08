@@ -108,7 +108,7 @@ RCT_EXPORT_METHOD(hide)
            @"onPollfishSurveyReceived",
            @"onUserNotEligible",
            @"onUserRejectedSurvey",
-fix            @"onInitFailedWithNullKey",
+           @"onInitFailedWithNullKey",
            @"onInitiatedWithParams",
            @"onInitiatedWithParamsError"
            ];
