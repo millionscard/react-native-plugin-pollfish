@@ -30,7 +30,7 @@ RCT_EXPORT_METHOD(init: (NSString *) androidApiKey
 {
     @try {
         if (iOSApiKey == [NSNull null]) {
-            [self emitEvent:"@onInitFailedWithNullKey" payload:nil]
+            [self emitEvent:@"onInitFailedWithNullKey" payload:nil];
             return;
         }
         PollfishParams * params = [[PollfishParams alloc] init:iOSApiKey];
@@ -70,9 +70,9 @@ RCT_EXPORT_METHOD(init: (NSString *) androidApiKey
         }
 
         [Pollfish initWith:params delegate:self];
-        [self emitEvent:"@onInitiatedWithParams" payload:nil];
+        [self emitEvent:@"onInitiatedWithParams" payload:nil];
     } @catch (NSException *exception) {
-        [self emitEvent:"@onInitiatedWithParamsError" payload:nil];
+        [self emitEvent:@"onInitiatedWithParamsError" payload:nil];
     }
 
 
