@@ -107,7 +107,10 @@ RCT_EXPORT_METHOD(hide)
            @"onPollfishSurveyNotAvailable",
            @"onPollfishSurveyReceived",
            @"onUserNotEligible",
-           @"onUserRejectedSurvey"
+           @"onUserRejectedSurvey",
+           @"onInitFailedWithNullKey"
+           @"onInitiatedWithParams",
+           @"onInitiatedWithParamsError"
            ];
 }
 
