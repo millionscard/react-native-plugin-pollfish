@@ -11,10 +11,10 @@ Pod::Spec.new do |s|
   s.authors      = pkg["author"]
 
   s.platforms    = { :ios => "9.0" }
-  s.source       = { :git => pkg["repository"]["url"], :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/millionscard/react-native-plugin-pollfish.git", :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,mm}"
-  
+
   s.dependency "React"
   s.dependency "Pollfish", "6.2.5"
 
