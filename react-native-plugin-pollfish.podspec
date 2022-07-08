@@ -3,7 +3,7 @@ require "json"
 pkg = JSON.parse(File.read("package.json"))
 
 Pod::Spec.new do |s|
-  s.name         = pkg["name"]
+  s.name         = "react-native-plugin-pollfish"
   s.version      = pkg["version"]
   s.summary      = pkg["description"]
   s.homepage     = pkg["homepage"]
