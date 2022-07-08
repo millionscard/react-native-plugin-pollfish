@@ -33,24 +33,40 @@ RCT_EXPORT_METHOD(init: (NSString *) androidApiKey
             [self emitEvent:@"onInitFailedWithNullKey" payload:nil];
             return;
         }
+        NSMutableDictionary * infoDict = [[NSMutableDictionary alloc] init];
+
         PollfishParams * params = [[PollfishParams alloc] init:iOSApiKey];
         [params indicatorPosition:position];
         [params indicatorPadding:padding];
         [params offerwallMode:offerwallMode];
         [params releaseMode:releaseMode];
         [params rewardMode:rewardMode];
-        [params platform:PlatformReactNative];
+        [params platform:Pl];
 
+        if (releaseMode) {
+          [infoDict setObject:@"true" forKey:@"releaseMode"];
+        } else{
+          [infoDict setObject:@"false" forKey:@"releaseMode"];
+        }
+        if (rewardMode) {
+          [infoDict setObject:@"true" forKey:@"rewardMode"];
+        } else{
+          [infoDict setObject:@"false" forKey:@"rewardMode"];
+        }
+    
         if (requestUUID != [NSNull null]) {
             [params requestUUID:requestUUID];
+            [infoDict setObject:requestUUID forKey:@"requestUUID"];
         }
 
         if (clickId != [NSNull null]) {
             [params clickId:clickId];
+            [infoDict setObject:clickId forKey:@"clickId"];
         }
 
         if (signature != [NSNull null]) {
             [params signature:signature];
+            [infoDict setObject:signature forKey:@"signature"];
         }
 
         if (userProperties != [NSNull null]) {
@@ -61,20 +77,22 @@ RCT_EXPORT_METHOD(init: (NSString *) androidApiKey
             }];
 
             [params userProperties:userPropertiesBuilder];
+            [infoDict setObject:userPropertiesBuilder forKey:@"userProperties"];
         }
 
         if (rewardInfoDict != [NSNull null]) {
             RewardInfo *rewardInfo = [[RewardInfo alloc] initWithRewardName: [rewardInfoDict valueForKey:@"rewardName"]
                                                            rewardConversion: [[rewardInfoDict valueForKey:@"rewardConversion"] doubleValue]];
             [params rewardInfo:rewardInfo];
+            [infoDict setObject:rewardInfo forKey:@"rewardInfo"];
         }
 
-        [Pollfish initWith:params delegate:self];
+        [Pollfish initWith:params delegate:infoDict];
+
         [self emitEvent:@"onInitiatedWithParams" payload:nil];
     } @catch (NSException *exception) {
         [self emitEvent:@"onInitiatedWithParamsError" payload:nil];
     }
-
 
 }
 
