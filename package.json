@@ -1,6 +1,6 @@
 {
     "name": "@millionscard/react-native-plugin-pollfish",
-    "version": "2.0.19",
+    "version": "2.0.20",
     "description": "Pollfish React Native SDK",
     "main": "index.js",
     "scripts": {
