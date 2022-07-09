@@ -41,6 +41,7 @@ RCT_EXPORT_METHOD(init: (NSString *) androidApiKey
         [params offerwallMode:offerwallMode];
         [params releaseMode:releaseMode];
         [params rewardMode:rewardMode];
+        [params platform:PlatformNative];
 
         if (releaseMode) {
           [infoDict setObject:@"true" forKey:@"releaseMode"];
