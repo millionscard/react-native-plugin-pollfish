@@ -41,7 +41,6 @@ RCT_EXPORT_METHOD(init: (NSString *) androidApiKey
         [params offerwallMode:offerwallMode];
         [params releaseMode:releaseMode];
         [params rewardMode:rewardMode];
-        [params platform:Pl];
 
         if (releaseMode) {
           [infoDict setObject:@"true" forKey:@"releaseMode"];
@@ -53,7 +52,7 @@ RCT_EXPORT_METHOD(init: (NSString *) androidApiKey
         } else{
           [infoDict setObject:@"false" forKey:@"rewardMode"];
         }
-    
+
         if (requestUUID != [NSNull null]) {
             [params requestUUID:requestUUID];
             [infoDict setObject:requestUUID forKey:@"requestUUID"];
