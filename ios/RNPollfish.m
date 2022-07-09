@@ -29,7 +29,7 @@ RCT_EXPORT_METHOD(init: (NSString *) androidApiKey
                   signature:(NSString *) signature)
 {
     @try {
-        if (iOSApiKey == [NSNull null]) {
+        if (iOSApiKey == nil) {
             [self emitEvent:@"onInitFailedWithNullKey" payload:nil];
             return;
         }
@@ -43,6 +43,7 @@ RCT_EXPORT_METHOD(init: (NSString *) androidApiKey
         [params rewardMode:rewardMode];
         [params platform:PlatformNative];
 
+
         if (releaseMode) {
           [infoDict setObject:@"true" forKey:@"releaseMode"];
         } else{
@@ -54,22 +55,22 @@ RCT_EXPORT_METHOD(init: (NSString *) androidApiKey
           [infoDict setObject:@"false" forKey:@"rewardMode"];
         }
 
-        if (requestUUID != [NSNull null]) {
+        if (requestUUID != nil) {
             [params requestUUID:requestUUID];
             [infoDict setObject:requestUUID forKey:@"requestUUID"];
         }
 
-        if (clickId != [NSNull null]) {
+        if (clickId != nil) {
             [params clickId:clickId];
             [infoDict setObject:clickId forKey:@"clickId"];
         }
 
-        if (signature != [NSNull null]) {
+        if (signature != nil) {
             [params signature:signature];
             [infoDict setObject:signature forKey:@"signature"];
         }
 
-        if (userProperties != [NSNull null]) {
+        if (userProperties != nil) {
             UserProperties *userPropertiesBuilder = [[UserProperties alloc] init];
 
             [userProperties enumerateKeysAndObjectsUsingBlock:^(id key, id object, BOOL *stop) {
@@ -80,16 +81,16 @@ RCT_EXPORT_METHOD(init: (NSString *) androidApiKey
             [infoDict setObject:userPropertiesBuilder forKey:@"userProperties"];
         }
 
-        if (rewardInfoDict != [NSNull null]) {
+        if (rewardInfoDict != nil) {
             RewardInfo *rewardInfo = [[RewardInfo alloc] initWithRewardName: [rewardInfoDict valueForKey:@"rewardName"]
                                                            rewardConversion: [[rewardInfoDict valueForKey:@"rewardConversion"] doubleValue]];
             [params rewardInfo:rewardInfo];
             [infoDict setObject:rewardInfo forKey:@"rewardInfo"];
         }
 
-        [Pollfish initWith:params delegate:infoDict];
+        [Pollfish initWith:params delegate:self];
 
-        [self emitEvent:@"onInitiatedWithParams" payload:nil];
+        [self emitEvent:@"onInitiatedWithParams" payload:infoDict];
     } @catch (NSException *exception) {
         [self emitEvent:@"onInitiatedWithParamsError" payload:nil];
     }
